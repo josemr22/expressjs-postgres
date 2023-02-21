@@ -2,6 +2,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import users from './db/users.json';
 import { writeFile } from 'fs/promises'
+const cors = require('cors')
 // import pg from "pg";
 
 // Connect to the database using the DATABASE_URL environment
@@ -12,6 +13,7 @@ import { writeFile } from 'fs/promises'
 const app = express();
 const port = process.env.PORT || 3333;
 
+app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.raw({ type: "application/vnd.custom-type" }));
 app.use(bodyParser.text({ type: "text/html" }));
@@ -33,13 +35,13 @@ app.get("/users/:dni", async (req, res) => {
 });
 
 app.post("/users", async (req, res) => {
-  const { name, dni, address, email, birthday  } = req.body
+  const { name, dni, email, birthday, number  } = req.body
   if(users.some(u => u.dni === dni)){
     return res.status(409).json({
       "message": "User already exists"
     })
   }
-  const user = { name, dni, address, email, birthday }
+  const user = { name, dni, email, birthday, number }
   users.push(user)
   await writeFile('./src/db/users.json', JSON.stringify(users))
   res.json(user);
