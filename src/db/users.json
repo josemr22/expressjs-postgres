@@ -1,9 +1,1 @@
-[
-  {
-    "name": "José Luis",
-    "dni": "76767676",
-    "number": "976767676",
-    "email": "joseluis@gmail.com",
-    "birthday": "2023-09-10"
-  }
-]
+[{"name":"José Luis","dni":"76767676","number":"976767676","email":"joseluis@gmail.com","birthday":"2023-09-10"},{"name":"jose luis martinez","dni":"435345345","email":"aasdas@gmail.com","birthday":"2023-02-24","number":"12312312312"},{"name":"Ejemplo","dni":"54545454","email":"asdasdas@emeal.com","birthday":"2023-02-08","number":"123123123"},{"name":"José Luis Martinez","dni":"32323232","email":"email@email.com","birthday":"2023-02-24","number":"123123123"},{"name":"José Luis Martinez","dni":"12121212","email":"email@email.com","birthday":"2023-02-17","number":"12313212312"},{"name":"Jose Jose","dni":"21212121","email":"asdas@emeal.com","birthday":"2023-02-09","number":"231313"},{"name":"Test 1","dni":"90909090","email":"email@email.com","birthday":"2023-02-09","number":"123123123"},{"name":"Jose","dni":"67676767","email":"enauk@asdas.com","birthday":"2023-02-07","number":"123123123"},{"name":"Jose Luis","dni":"56565656","email":"email@email.com","birthday":"2023-02-23","number":"12121212"},{"name":"Jose Luis","dni":"13131313","email":"adasdsa@email.com","birthday":"2023-02-07","number":"123132123"}]

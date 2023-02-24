@@ -1,6 +1,7 @@
 import bodyParser from "body-parser";
 import express from "express";
 import users from './db/users.json';
+import reservations from './db/reservations.json';
 import { writeFile } from 'fs/promises'
 const cors = require('cors')
 // import pg from "pg";
@@ -9,7 +10,7 @@ const cors = require('cors')
 //   variable injected by Railway
 // const pool = new pg.Pool();
 
-
+console.log(reservations.forEach);
 const app = express();
 const port = process.env.PORT || 3333;
 
@@ -24,7 +25,7 @@ app.get("/users", async (req, res) => {
 });
 
 app.get("/users/:dni", async (req, res) => {
-  const { dni } = req.params
+  const { dni }: any = req.params
   const user = users.find(u => u.dni === dni)
   if(!user){
     return res.status(404).json({
@@ -45,6 +46,40 @@ app.post("/users", async (req, res) => {
   users.push(user)
   await writeFile('./src/db/users.json', JSON.stringify(users))
   res.json(user);
+});
+
+// app.get("/reservations/:dni", async (req, res) => {
+//   const { dni  } = req.params
+//   const reservation = reservations.some((r: any) => r.dni === dni)
+//   if(reservation){
+//     return res.json(reservation)
+//   }
+//   return res.status(404).json({message: "reservation not found"})
+// });
+
+app.post("/reservations", async (req, res) => {
+  const { dni, date  } = req.body
+
+  let isNew = false
+  let reservation = reservations.find((r: any) => {
+
+    return r.dni === dni && r.date === date
+  })
+  
+  
+  if(!reservation){
+    reservation = {
+      id: new Date().getTime(),
+      dni,
+      date,
+      hash: new Date().getTime()
+    }
+    reservations.push(reservation)
+    isNew = true
+  }
+
+  await writeFile('./src/db/reservations.json', JSON.stringify(reservations))
+  res.json({reservation, isNew});
 });
 
 app.listen(port, () => {
