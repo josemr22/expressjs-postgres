@@ -108,6 +108,16 @@ app.post("/reservations", async (req, res) => {
   res.json({reservation, isNew});
 });
 
+app.post("/login", (req, res) => {
+  const {email, password} = req.body
+
+  const user = users.find((u: any) => u.email === email && u.password === password)
+  if(!user){
+    return res.status(401).json({message: "Invalid credentials"})
+  }
+  res.json(user)
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
