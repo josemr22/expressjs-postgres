@@ -1,16 +1,14 @@
 import bodyParser from "body-parser";
 import express from "express";
-import users from './db/users.json';
-import reservations from './db/reservations.json';
+import usersJson from './db/users.json';
+import reservationsJson from './db/reservations.json';
 import { writeFile } from 'fs/promises'
+import { User } from './interfaces/User';
+import { Reservation } from './interfaces/Reservation';
 const cors = require('cors')
-// import pg from "pg";
 
-// Connect to the database using the DATABASE_URL environment
-//   variable injected by Railway
-// const pool = new pg.Pool();
-
-console.log(reservations.forEach);
+const users: User[] = usersJson
+const reservations: Reservation[] = reservationsJson
 const app = express();
 const port = process.env.PORT || 3333;
 
@@ -19,9 +17,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.raw({ type: "application/vnd.custom-type" }));
 app.use(bodyParser.text({ type: "text/html" }));
 
-// const { rows } = await pool.query("SELECT NOW()");
+app.get("/", async (req, res) => {
+  return res.json({message: "Hello World"})
+});
+
 app.get("/users", async (req, res) => {
-  res.json(users);
+  const response = users.map((u: any) => {
+    const numberOfReservations = reservations.filter((r: any) => {
+      return r.dni === u.dni
+    }).length
+    return {
+      ...u,
+      numberOfReservations
+    }
+  })
+  res.json(response);
 });
 
 app.get("/users/:dni", async (req, res) => {
@@ -56,6 +66,22 @@ app.post("/users", async (req, res) => {
 //   }
 //   return res.status(404).json({message: "reservation not found"})
 // });
+
+app.get('/reservations', (req, res) => {
+  const {date} = req.query
+  const response = reservations
+  .filter((r: any) => {
+    return date ? r.date === date : true
+  })
+  .map((r: any) => {
+    const user = users.find((u: any) => u.dni === r.dni)
+    return {
+      ...r,
+      user
+    }
+  })
+  res.json(response)
+})
 
 app.post("/reservations", async (req, res) => {
   const { dni, date  } = req.body
